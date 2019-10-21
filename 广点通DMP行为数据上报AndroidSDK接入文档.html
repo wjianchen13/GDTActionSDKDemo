@@ -1,0 +1,660 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>广点通DMP行为数据上报SDK接入文档</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style>html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, a,
+abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup,
+tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: inherit;
+    font-size: 100%;
+    vertical-align: baseline
+}
+
+body {
+    line-height: 1;
+    color: #000;
+    background: #fff
+}
+
+ol, ul {
+    list-style: none
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    vertical-align: middle
+}
+
+caption, th, td {
+    text-align: left;
+    font-weight: normal;
+    vertical-align: middle
+}
+
+a {
+    text-decoration: inherit;
+    color:#1690e5
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+a img {
+    border: none
+}
+
+* {
+    box-sizing: border-box
+}
+
+.markdown-body {
+    position: relative;
+    margin: 0 auto;
+    max-width: 820px;
+    padding: 18px 20px 18px 20px;
+    word-wrap: break-word;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5em;
+    color: #333;
+}
+
+@media screen and (max-width: 479px) {
+    .markdown-body {
+        padding-right: 0
+    }
+}
+
+/* 2k屏幕以下，字体小一些，不然比较难看 */
+@media screen and (max-width: 1600px) {
+    .markdown-body {
+        padding-right: 0;
+        font-size: 12px;
+    }
+}
+
+.markdown-body > *:first-child {
+    margin-top: 0 !important
+}
+
+.markdown-body strong {
+    font-weight: bold
+}
+
+.markdown-body hr {
+    border-top: 1px solid #cacaca;
+    border-width: 1px 0 0 0
+}
+
+.markdown-body em {
+    font-style: italic
+}
+
+.markdown-body img {
+    max-width: 100%
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    position: relative;
+    margin-top: 1em;
+    margin-bottom: 16px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+.markdown-body h1 a, .markdown-body h2 a, .markdown-body h3 a, .markdown-body h4 a, .markdown-body h5 a, .markdown-body h6 a {
+    display: none
+}
+
+.markdown-body h1:hover a, .markdown-body h2:hover a, .markdown-body h3:hover a, .markdown-body h4:hover a, .markdown-body h5:hover a, .markdown-body h6:hover a {
+    display: inline;
+    color: #000;
+    font-size: 85%
+}
+
+.markdown-body h1, .markdown-body h2 {
+    /*border-bottom: 1px solid #eee*/
+}
+
+.markdown-body h1 {
+    font-size: 2.0em;
+    line-height: 1.2;
+    padding-bottom: .3em
+}
+
+.markdown-body h2 {
+    padding-bottom: .3em;
+    font-size: 1.6em;
+    line-height: 1.225;
+    /*border-bottom: 1px dashed #dedede*/
+}
+
+.markdown-body blockquote {
+    padding: 0 15px;
+    color: #777;
+    border-left: 4px solid #ddd;
+    margin: 0;
+}
+
+.markdown-body blockquote > :last-child {
+    margin-bottom: 0
+}
+
+.markdown-body blockquote > :first-child {
+    margin-top: 0
+}
+
+.markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre {
+    margin-top: 0;
+    margin-bottom: 16px
+}
+
+.markdown-body ul, .markdown-body ol {
+    padding-left: 1.4em;
+    list-style: initial
+}
+
+.markdown-body ol {
+    list-style-type: decimal
+}
+
+.markdown-body ol ol, .markdown-body ul ol {
+    list-style-type: lower-roman
+}
+
+.markdown-body ul ul ol, .markdown-body ul ol ol, .markdown-body ol ul ol, .markdown-body ol ol ol {
+    list-style-type: lower-alpha
+}
+
+.markdown-body pre {
+    padding: 10px;
+    overflow: auto;
+    background-color: #f7f7f9;
+    border-radius: 3px;
+    word-break: break-all;
+    word-wrap: break-word;
+    font: 16px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+.markdown-body pre code {
+    background-color: transparent;
+    color: inherit;
+    line-height: 16px;
+    display: block;
+    font-size: 14px
+}
+
+@media screen and (max-width: 1600px) {
+    .markdown-body pre code {
+        font-size: 12px
+    }
+}
+
+.markdown-body pre code:before, .markdown-body pre code:after, .markdown-body pre tt:before, .markdown-body pre tt:after {
+    letter-spacing: 0;
+    content: ""
+}
+
+.markdown-body code,
+.markdown-body tt {
+    margin: 0 3px;
+    vertical-align: top;
+    background-color: #F0F8FF;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 14px;
+    color: #1690e5; /*广点通蓝色 #1690e5  4183c4*/
+}
+
+.markdown-body p code {
+    border: 1px solid #e1e1e8;
+}
+
+@media screen and (max-width: 1600px) {
+    .markdown-body code, .markdown-body tt {
+        font-size: 12px;
+    }
+}
+
+.markdown-body code:before, .markdown-body code:after, .markdown-body tt:before, .markdown-body tt:after {
+    content: "\00a0";
+    vertical-align: text-top
+}
+
+.markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    max-width: 100%;
+    display: block;
+    background-color: transparent;
+}
+
+.markdown-body table th, .markdown-body table td {
+    border: 1px solid #ddd;
+    padding: 4px 10px
+}
+
+.markdown-body table th {
+    font-weight: bold;
+    background: #f3f3f3
+}
+
+.markdown-body table tr:nth-child(2n) {
+    background-color: #f8f8f8
+}
+
+.markdown-body table tbody {
+    background: #fff
+}
+
+.markdown-body .task-list-item {
+    padding: 0;
+}
+
+.markdown-body .task-list-item li {
+    list-style-type: none
+}
+
+.hljs {
+    display: block;
+    background: white;
+    padding: 0.5em;
+    color: #333333;
+    overflow-x: auto;
+}
+
+.hljs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.hljs-comment,
+.hljs-meta {
+    color: #969896;
+}
+
+.hljs-string,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-strong,
+.hljs-emphasis,
+.hljs-quote {
+    color: #df5000;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-type {
+    color: #a71d5d;
+}
+
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-attribute {
+    color: #0086b3;
+}
+
+.hljs-section,
+.hljs-name {
+    color: #63a35c;
+}
+
+.hljs-tag {
+    color: #333333;
+}
+
+.hljs-title,
+.hljs-attr,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+    color: #795da3;
+}
+
+.hljs-addition {
+    color: #55a532;
+    background-color: #eaffea;
+}
+
+.hljs-deletion {
+    color: #bd2c00;
+    background-color: #ffecec;
+}
+
+.hljs-link {
+    text-decoration: underline;
+}
+
+* {
+    box-sizing: border-box
+}
+
+body, html {
+    height: 100%;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    letter-spacing: .2px;
+}
+
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 1124px;
+    margin: 0 auto;
+}
+
+@media screen and (min-width: 480px) and (max-width: 1170px) {
+    .container {
+        width: auto
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .container {
+        width: auto
+    }
+}
+
+.container:before {
+    display: table;
+    content: " "
+}
+
+.container:after {
+    display: table;
+    content: " ";
+    clear: both
+}
+
+.markdown-body {
+    overflow: auto
+}
+
+/* 目录 */
+.page-toc {
+    width: 200px;
+    float: left;
+    background: #fff;
+    padding: 9px 0 25px 20px;
+    margin-top: 35px;
+    border-left: 1px solid #eee;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif !important;
+}
+
+@media screen and (min-width: 480px) and (max-width: 1170px) {
+    .page-toc {
+        width: auto
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .page-toc {
+        display: none
+    }
+}
+
+.page-toc ul {
+    list-style-type: none;
+    margin: 0;
+}
+
+.page-toc ul a {
+    display: block;
+    padding: 3px 0;
+    color: #151515;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 16px;
+    font-size: 14px;
+}
+
+.page-toc ul a:hover {
+    color: #f00;
+    text-decoration: underline
+}
+
+.page-toc ul li {
+    padding-left: 3px;
+    text-align: left;
+    float: initial
+}
+
+.page-toc ul ul {
+    margin: 0 0 0 10px;
+    list-style-type: square;
+    padding: 0 0 0 9px;
+}
+
+.page-toc ul ul li a {
+    font-size: 90%;
+    font-weight: normal;
+    border-bottom: 0
+}</style></head><body><div class="content markdown-body"><h1 id="-android-sdk-v1-4">广点通行为数据上报Android SDK接入文档 - V1.4</h1>
+<h2 id="1-sdk">1.  下载和导入SDK</h2>
+<p>登录<a href="http://de.qq.com">DMP系统</a>（MP广告主登录<a href="https://mp.weixin.qq.com/">MP系统</a> -『人群管理』-『高级拓展』进入DMP），在“数据接入”页面创建App用户行为数据源。行为数据源的类型选择ANDROID，并填写相应的应用ID，输入数据源名称创建一个数据源。创建好数据源之后，您会看到DMP给您的App数据源分配了两个ID，一个是行为数据源ID（UserActionSetID），另一个是AppSecretKey。</p>
+<p>然后点击获取SDK，下载Android SDK的压缩包，压缩包中的<code>GDTActionSDK.min.x.x.x.jar</code>文件为您的App需要嵌入的SDK，压缩包中的<code>GDTActionSDKDemo</code>是我们提供的SDK接入示例工程。注意，本文档提到的<code>GDTActionSDK.min.x.x.x.jar</code>中的<code>x.x.x</code>指的是您实际下载的SDK版本号，如<code>1.4.0</code>。</p>
+<h3 id="1-1-android-studio-">1.1    方法一：导入Android Studio（推荐）</h3>
+<p>找到您的App工程下的<code>libs</code>文件夹，将下载到的SDK的jar包<code>GDTActionSDK.min.x.x.x.jar</code>拷贝到该目录下。</p>
+<p>然后在Android Studio中找到您的App所在的module目录，修改它的<code>build.gradle</code>文件，在dependencies下面添加SDK的依赖，如下所示。</p>
+<pre><code>...
+dependencies {
+    compile files(&#39;libs/GDTActionSDK.min.x.x.x.jar&#39;) 
+}
+...
+</code></pre><h3 id="1-2-eclipse">1.2    方法二：导入Eclipse</h3>
+<p>找到工程下的<code>libs</code>文件夹，将下载到的SDK的jar包<code>GDTActionSDK.min.x.x.x.jar</code>拷贝到该目录下。</p>
+<p>然后在Eclipse中找到您的工程中刚才添加的jar包，右键它，选择<code>Build Path-&gt;Add to Build Path</code>。</p>
+<h2 id="2-sdk-">2. 添加SDK需要的权限</h2>
+<p>找到您的App所在module的目录，修改<code>AndroidManifest.xml</code>文件，添加权限：</p>
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">"android.permission.INTERNET"</span> /&gt;</span> <span class="hljs-comment">&lt;!-- 允许联网 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">"android.permission.ACCESS_NETWORK_STATE"</span>/&gt;</span> <span class="hljs-comment">&lt;!-- 检测联网方式，区分设备当前网络是2G、3G、4G还是WiFi --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">"android.permission.ACCESS_WIFI_STATE"</span> /&gt;</span> <span class="hljs-comment">&lt;!-- 获取MAC地址，和设备标识一起作为用户标识 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">"android.permission.READ_PHONE_STATE"</span>/&gt;</span> <span class="hljs-comment">&lt;!-- 获取设备标识，标识用户 --&gt;</span>
+</code></pre>
+<h2 id="3-sdk-">3. SDK要求的系统版本</h2>
+<p>SDK要求最低系统版本为API 14（Android 4.0）。</p>
+<h2 id="4-">4. 混淆配置</h2>
+<p>如果您开启了混淆，请加入下面的配置：</p>
+<pre><code>-dontwarn com.qq.gdt.action.**
+-keep class com.qq.gdt.action.** {*;}
+</code></pre><h2 id="5-sdk-">5. SDK初始化</h2>
+<p>SDK的初始化分两步，第一步是调用<code>GDTAction.init</code>方法来初始化SDK；第二步是调用<code>GDTAction.logAction(ActionType.START_APP);</code>来上报App启动行为。下面以GDTActionSDKDemo工程为例进行说明。</p>
+<h3 id="5-1-">5.1 初始化</h3>
+<p>找到您的App的<strong>Application类</strong>（这里以GDTActionApplication类为例），在<code>onCreate()</code>方法中调用下面这段代码来初始化SDK，初始化相关的信息在Logcat会输出，请开发者关注。</p>
+<pre><code class="lang-java"><span class="hljs-keyword">package</span> com.qq.gdt.action.demo;
+
+<span class="hljs-keyword">import</span> android.app.Application;
+<span class="hljs-keyword">import</span> com.qq.gdt.action.GDTAction;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GDTActionApplication</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Application</span> </span>{
+
+  <span class="hljs-meta">@Override</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onCreate</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">super</span>.onCreate();
+    <span class="hljs-comment">// ...</span>
+    GDTAction.init(<span class="hljs-keyword">this</span>, <span class="hljs-string">"yourUserActionSetID"</span>, <span class="hljs-string">"yourAppSecretKey"</span>); <span class="hljs-comment">// 第一个参数是Context上下文，第二个参数是您在DMP上获得的行为数据源ID，第三个参数是您在DMP上获得AppSecretKey</span>
+  }
+}
+</code></pre>
+<p><strong>注意：</strong></p>
+<ul>
+<li>1.<strong>调用位置：</strong><code>GDTAction.init</code>初始化方法，必须在<code>Application</code>类的<code>onCreate</code>方法中调用。否则SDK将无法成功初始化，也无法准确上报App的启动和激活行为。（从<code>1.3.0</code>版本开始，SDK的<code>GDTAction.init</code>接口不再需要获取动态权限，只需要确保调用位置正确。如果没有在指定位置调用init方法，SDK会输出错误日志。）</li>
+<li>2.<strong>调用顺序：</strong><code>GDTAction.init</code>初始化方法，必须在<code>GDTAction.logAction</code>行为上报方法的调用之前成功调用，否则<code>GDTAction.logAction</code>不会上报行为。</li>
+</ul>
+<h3 id="5-2-app-">5.2 上报App启动</h3>
+<p>找到<strong>Activity</strong>类（这里以GDTActionLauncherActivity类为例）的<code>onResume()</code>方法，调用下面的代码来上报App启动行为。</p>
+<pre><code class="lang-java">GDTAction.logAction(ActionType.START_APP); <span class="hljs-comment">// 传入的actionType参数必须是ActionType.START_APP</span>
+</code></pre>
+<p><strong>注意：</strong></p>
+<ul>
+<li>1.如果您的App适配了Android6.0（API &gt;= 23），调用<code>logAction</code>时，需要处理Android6.0动态权限的兼容问题。具体做法是，先检查App是否获得了<code>android.permission.READ_PHONE_STATE</code>权限，如果获得了这项权限，可以直接调用上面这段代码上报App启动行为；如果没有获得权限，那么需要调用<code>requestPermissions</code>方法来向用户申请权限，并在获得了权限之后，调用上面的代码来上报App启动行为。在我们SDK的Demo工程中有相应示例。</li>
+<li>2.SDK要求在Activity的<code>onResume</code>方法中，而不是<code>onCreate</code>方法中去上报App启动行为，是因为当用户按下home键使应用退到后台，再恢复到前台时，可能不会执行<code>onCreate</code>方法。</li>
+<li>3.SDK内部会自动计算App退出到后台的时间间隔，30秒内多次调用也只会上报一次App启动事件。为确保启动行为的准确上报，请在每一个<code>Activity</code>的<code>onResume</code>方法中都调用这段代码。</li>
+</ul>
+<h2 id="6-">6. 上报行为数据</h2>
+<p>在App内发生转化行为时（如某一个Button组件的onClick(View view)方法），可以调用下面的代码上报行为数据。</p>
+<pre><code class="lang-java"><span class="hljs-comment">// 用户发生购物行为时，可以用GDTAction.logAction上报用户的这次行为，并将价格等行为参数一起带上</span>
+JSONObject actionParam = <span class="hljs-keyword">new</span> JSONObject();
+actionParam.put(<span class="hljs-string">"value"</span>, <span class="hljs-number">6800</span>);
+actionParam.put(<span class="hljs-string">"name"</span>, <span class="hljs-string">"Pixel 2 XL"</span>);
+GDTAction.logAction(ActionType.PURCHASE, actionParam);
+</code></pre>
+<p>上报数据后，您可以登录<a href="http://de.qq.com">DMP系统</a>，在App数据接入页面下查看您App数据的接入情况。</p>
+<p>关于行为类型（actionType）和行为参数（actionParam）的类型，在《SDK主要API》这一节有详细说明。</p>
+<h2 id="7-sdk-api">7. SDK主要API</h2>
+<ul>
+<li><strong>com.qq.gdt.action.GDTAction</strong></li>
+</ul>
+<table><tr>
+<th style="text-align:left">方法名</th>
+<th style="text-align:left">功能</th>
+</tr>
+<tr>
+<td style="text-align:left">init(Context context, String userActionSetId, String appSecretKey)</td>
+<td style="text-align:left">初始化方法，必须在App的入口调用一次  <br>  @param context : App的上下文信息，一般是Application/Activity  <br>  @param userActionSetId : 您在DMP数据接入获得的行为数据源ID  <br>  @param appSecretKey : 您在DMP数据接入获得的行为数据源Secret ID <br> </td>
+</tr>
+<tr>
+<td style="text-align:left">logAction(String actionType)</td>
+<td style="text-align:left">行为上报接口  <br>  @param actionType : 行为类型，分为两类，一类是在DMP上定义的标准行为类型，具体见com.qq.gdt.action.ActionType类；另一类是您自己自定义的行为类型，可以传入一个字符串类型的参数，<strong>要求：这个字符串只能包含字母、数字和下划线，必须以字母开头，长度不能超过255</strong>  <br> </td>
+</tr>
+<tr>
+<td style="text-align:left">logAction(String actionType, JSONObject actionParam)</td>
+<td style="text-align:left">行为上报接口，支持上报行为参数  <br>  @param actionType : 行为类型，详细描述同上  <br>  @param actionParam : 行为参数，行为参数是&quot;Key-Value&quot;类型，Key只可以为String类型，<strong>只能包含字母、数字和下划线，必须以字母开头，长度不能超过255</strong>；Value可以是String/Number/Boolean/JSONArray其中一种，当Value为JSONArray时，它的元素只能为String/Number/Boolean中的一种，且所有元素必须是同一个类型  <br> </td>
+</tr>
+</table><ul>
+<li><strong>com.qq.gdt.action.ActionType</strong></li>
+</ul>
+<p>这个类里面定义了DMP当前版本支持的标准行为类型，除了这些行为以外，如果您需要上报自定义行为，可以直接给<code>logAction(String actionType)</code>方法的<code>actionType</code>参数传入一个字符串即可。</p>
+<table><tr>
+<th style="text-align:center">常量名</th>
+<th style="text-align:center">值</th>
+<th style="text-align:center">含义</th>
+</tr>
+<tr>
+<td style="text-align:center">START_APP</td>
+<td style="text-align:center">START_APP</td>
+<td style="text-align:center">应用启动</td>
+</tr>
+<tr>
+<td style="text-align:center">PAGE_VIEW</td>
+<td style="text-align:center">PAGE_VIEW</td>
+<td style="text-align:center">页面浏览</td>
+</tr>
+<tr>
+<td style="text-align:center">REGISTER</td>
+<td style="text-align:center">REGISTER</td>
+<td style="text-align:center">注册</td>
+</tr>
+<tr>
+<td style="text-align:center">VIEW_CONTENT</td>
+<td style="text-align:center">VIEW_CONTENT</td>
+<td style="text-align:center">内容浏览</td>
+</tr>
+<tr>
+<td style="text-align:center">CONSULT</td>
+<td style="text-align:center">CONSULT</td>
+<td style="text-align:center">咨询</td>
+</tr>
+<tr>
+<td style="text-align:center">ADD_TO_CART</td>
+<td style="text-align:center">ADD_TO_CART</td>
+<td style="text-align:center">加入购物车</td>
+</tr>
+<tr>
+<td style="text-align:center">PURCHASE</td>
+<td style="text-align:center">PURCHASE</td>
+<td style="text-align:center">付费购买</td>
+</tr>
+<tr>
+<td style="text-align:center">SEARCH</td>
+<td style="text-align:center">SEARCH</td>
+<td style="text-align:center">搜索</td>
+</tr>
+<tr>
+<td style="text-align:center">ADD_TO_WISHLIST</td>
+<td style="text-align:center">ADD_TO_WISHLIST</td>
+<td style="text-align:center">加入收藏</td>
+</tr>
+<tr>
+<td style="text-align:center">INITIATE_CHECKOUT</td>
+<td style="text-align:center">INITIATE_CHECKOUT</td>
+<td style="text-align:center">开始结算</td>
+</tr>
+<tr>
+<td style="text-align:center">COMPLETE_ORDER</td>
+<td style="text-align:center">COMPLETE_ORDER</td>
+<td style="text-align:center">下单</td>
+</tr>
+<tr>
+<td style="text-align:center">DOWNLOAD_APP</td>
+<td style="text-align:center">DOWNLOAD_APP</td>
+<td style="text-align:center">下载应用</td>
+</tr>
+<tr>
+<td style="text-align:center">RATE</td>
+<td style="text-align:center">RATE</td>
+<td style="text-align:center">评分</td>
+</tr>
+<tr>
+<td style="text-align:center">RESERVATION</td>
+<td style="text-align:center">RESERVATION</td>
+<td style="text-align:center">预订</td>
+</tr>
+<tr>
+<td style="text-align:center">SHARE</td>
+<td style="text-align:center">SHARE</td>
+<td style="text-align:center">分享</td>
+</tr>
+<tr>
+<td style="text-align:center">APPLY</td>
+<td style="text-align:center">APPLY</td>
+<td style="text-align:center">申请，用于金融广告主的申请贷款、开卡等</td>
+</tr>
+<tr>
+<td style="text-align:center">CLAIM_OFFER</td>
+<td style="text-align:center">CLAIM_OFFER</td>
+<td style="text-align:center">领取卡券，用于web落地页领取卡券等优惠信息的行为</td>
+</tr>
+<tr>
+<td style="text-align:center">NAVIGATE</td>
+<td style="text-align:center">NAVIGATE</td>
+<td style="text-align:center">导航，用于web落地页点击跳转到地图的行为</td>
+</tr>
+<tr>
+<td style="text-align:center">PRODUCT_RECOMMEND</td>
+<td style="text-align:center">PRODUCT_RECOMMEND</td>
+<td style="text-align:center">商品推荐，动态创意客户直接传算好的推荐结果时使用</td>
+</tr>
+</table><h2 id="8-">8. 其他注意事项</h2>
+<h3 id="8-1-api-sdk-">8.1 从API切换到SDK上报</h3>
+<p>一般情况下，在调用<code>logAction(ActionType.START_APP)</code>上报行为时，SDK会自主判断这次行为是激活行为还是启动行为。</p>
+<p>若广告主是<strong>从API切换到SDK</strong>做数据上报，可能会需要控制这次行为是激活还是启动行为，这时可以在行为参数<code>actionParam</code>中添加一个参数，具体代码如下：</p>
+<pre><code class="lang-java">JSONObject actionParam = <span class="hljs-keyword">new</span> JSONObject();
+actionParam.put(ActionParam.Key.AUDIENCE_TYPE, ActionParam.Value.AUDIENCE_TYPE_USED);
+GDTAction.logAction(ActionType.START_APP, actionParam);
+</code></pre>
+<ul>
+<li>如果<code>AUDIENCE_TYPE</code>为<code>AUDIENCE_TYPE_USED</code>，SDK会认为这次行为是老客户的启动行为，而不是新用户的激活行为。</li>
+<li>如果<code>AUDIENCE_TYPE</code>为<code>AUDIENCE_TYPE_NEW</code>，SDK会按照通用的逻辑，自主判断这次行为是激活行为还是启动行为。</li>
+</ul>
+<h3 id="8-2-">8.2 行为上报自定义去重</h3>
+<p>对于需要做自定义去重的广告主，可以在调用<code>logAction(actionType, actionParams)</code>上报行为时，在<code>actionParams</code>中传入<code>key</code>为<code>outer_action_id</code>的参数，具体代码如下：</p>
+<pre><code class="lang-java">JSONObject actionParam = <span class="hljs-keyword">new</span> JSONObject();
+actionParam.put(ActionParam.Key.OUTER_ACTION_ID, <span class="hljs-string">"yourOuterActionId"</span>); <span class="hljs-comment">// 传入outer_action_id</span>
+GDTAction.logAction(ActionType.COMPLETE_ORDER, actionParam); <span class="hljs-comment">// 此处以上报下单这个行为为例</span>
+</code></pre>
+<p>SDK内部会自动处理<code>outer_action_id</code>这个参数并<strong>将它从<code>actionParams</code>中移除</strong>，广告主也不会在DMP-Web页面上的行为参数中看到这个outer_action_id这个参数。</p>
+<h3 id="8-3-">8.3 行为上报指定用户次日留存</h3>
+<p>对于需要指定上报用户次日留存指标的广告主，可以在调用<code>logAction(ActionType.START_APP, actionParams)</code>时，在<code>actionParams</code>中传入<code>key</code>为<code>length_of_stay</code>的参数，取值为<code>1</code>。具体代码如下：</p>
+<pre><code class="lang-java">JSONObject actionParam = <span class="hljs-keyword">new</span> JSONObject();
+actionParam.put(ActionParam.Key.LENGTH_OF_STAY, <span class="hljs-number">1</span>); <span class="hljs-comment">// 传入值为1的length_of_stay参数</span>
+GDTAction.logAction(ActionType.START_APP, actionParam); <span class="hljs-comment">// 上报START_APP行为时带上该参数</span>
+</code></pre>
+<p>上报此参数后，系统会指定该次上报为留存数据。</p>
+</div></body></html>

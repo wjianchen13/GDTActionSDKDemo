@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">广点通行为数据上报SDK示例</string>
+    <string name="standard_action_type">标准行为</string>
+    <string name="send_standard_action">上报标准行为</string>
+    <string name="custom_action_type">自定义行为</string>
+    <string name="custom_action_type_hint">自定义行为可以是除标准行为外的字符串</string>
+    <string name="send_custom_action">上报自定义行为</string>
+</resources>
