@@ -68,6 +68,21 @@ GDTAction.logAction(ActionType.START_APP); // 传入的actionType参数必须是
 ```
 其他具体接入相关内容参考：广点通DMP行为数据上报AndroidSDK接入文档.html（下载到本地打开）
 
+## license
+
+    Copyright 2019 wjianchen13
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
 
 
